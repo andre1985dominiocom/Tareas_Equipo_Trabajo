@@ -1,4 +1,4 @@
-# PROYECTO BASE: [Nombre de la Aplicación] - Software Factory SENA
+# PROYECTO BASE: [Actividad de Transferencia Dominio del DOM] - Software Factory SENA
 
 **Metodología:** *"Del Requerimiento al Producto"*
 
@@ -10,9 +10,9 @@ Este repositorio constituye la base técnica y administrativa para el desarrollo
 
 El objetivo de este proyecto es desarrollar una solución tecnológica funcional, priorizando:
 
-- Arquitectura limpia  
-- Código escalable  
-- Trazabilidad total  
+- Arquitectura limpia
+- Código escalable
+- Trazabilidad total
 
 ### El "Por qué" (Justificación)
 
@@ -24,17 +24,17 @@ Dominar el ciclo de vida del software es tan importante como programar. Esta met
 
 Antes de escribir la primera línea de código o ejecutar un comando, es obligatorio revisar las guías de trabajo.
 
-### Nivel 1. Sistema  
-**Ubicación:** `docs/01-guia-sistema/`  
-- Manuales técnicos: creación de Issues y Milestones  
+### Nivel 1. Sistema
+**Ubicación:** `docs/01-guia-sistema/`
+- Manuales técnicos: creación de Issues y Milestones
 
-### Nivel 2. Metodología  
-**Ubicación:** `docs/02-guia-metodologia/`  
-- Reglas para reportar tareas y solicitar revisiones (PR)  
+### Nivel 2. Metodología
+**Ubicación:** `docs/02-guia-metodologia/`
+- Reglas para reportar tareas y solicitar revisiones (PR)
 
-### Nivel 3. Formatos  
-**Ubicación:** `docs/03-formatos-maestros/`  
-- Plantillas oficiales de documentos  
+### Nivel 3. Formatos
+**Ubicación:** `docs/03-formatos-maestros/`
+- Plantillas oficiales de documentos
 
 ---
 
@@ -42,21 +42,21 @@ Antes de escribir la primera línea de código o ejecutar un comando, es obligat
 
 ### Líder (Arquitecto)
 
-- **Responsabilidad:** Integridad del repositorio y control de calidad  
+- **Responsabilidad:** Integridad del repositorio y control de calidad
 - **Tareas en GitHub:**
-  - Protección de ramas  
-  - Gestión de Milestones  
-  - Aprobación de Pull Requests  
+  - Protección de ramas
+  - Gestión de Milestones
+  - Aprobación de Pull Requests
 
 ---
 
 ### Desarrollador (Albañil)
 
-- **Responsabilidad:** Construcción de módulos y lógica  
+- **Responsabilidad:** Construcción de módulos y lógica
 - **Tareas en GitHub:**
-  - Desarrollo en ramas `feat/`  
-  - Reporte de avances  
-  - Solicitud de revisión técnica  
+  - Desarrollo en ramas `feat/`
+  - Reporte de avances
+  - Solicitud de revisión técnica
 
 ---
 
@@ -160,12 +160,12 @@ Este flujo protege la estabilidad del código base. Si tu código falla, solo fa
 Para garantizar la integridad del producto, el repositorio cuenta con candados de seguridad:
 
 - **Rama `main`:**
-  - Representa el estado de producción  
-  - Solo recibe código desde `develop` cuando un Milestone (Hito) está al 100%  
+  - Representa el estado de producción
+  - Solo recibe código desde `develop` cuando un Milestone (Hito) está al 100%
 
 - **Restricción de Merge:**
-  - El botón de integración está bloqueado para los desarrolladores  
-  - Solo el Líder tiene el permiso final tras la revisión  
+  - El botón de integración está bloqueado para los desarrolladores
+  - Solo el Líder tiene el permiso final tras la revisión
 
 ---
 
@@ -173,17 +173,17 @@ Para garantizar la integridad del producto, el repositorio cuenta con candados d
 
 Antes de que el Líder apruebe un Pull Request, el desarrollador debe garantizar:
 
-- **Limpieza:**  
-  Cero `console.log`, variables sin uso o código comentado (*"por si acaso"*)  
+- **Limpieza:**
+  Cero `console.log`, variables sin uso o código comentado (*"por si acaso"*)
 
-- **Responsive:**  
-  El diseño se adapta sin romperse a pantallas móviles  
+- **Responsive:**
+  El diseño se adapta sin romperse a pantallas móviles
 
-- **Sincronización:**  
-  La rama está actualizada y sin conflictos de merge  
+- **Sincronización:**
+  La rama está actualizada y sin conflictos de merge
 
-- **Automatización:**  
-  La descripción del PR incluye `Closes #ID` para cerrar la tarea  
+- **Automatización:**
+  La descripción del PR incluye `Closes #ID` para cerrar la tarea
 
 ### El "Por qué"
 
@@ -195,9 +195,9 @@ Un control de calidad preventivo reduce la deuda técnica (errores acumulados) y
 
 La fase del proyecto se considera exitosa, terminada y lista para calificación únicamente cuando:
 
-- El **Milestone** en GitHub marca el **100%** de progreso  
-- Todas las **Issues** del hito están cerradas y vinculadas a un PR aprobado  
-- El proyecto está desplegado en vivo (ej. Vercel, GitHub Pages) y funciona sin errores  
+- El **Milestone** en GitHub marca el **100%** de progreso
+- Todas las **Issues** del hito están cerradas y vinculadas a un PR aprobado
+- El proyecto está desplegado en vivo (ej. Vercel, GitHub Pages) y funciona sin errores
 
 ### El "Por qué"
 
@@ -207,10 +207,10 @@ En la industria, el software que no está publicado no existe. Esto vincula el r
 
 ## DIRECCIÓN DEL PROYECTO
 
-- **Instructor:** [Tu Nombre Aquí]  
-- **Institución:** Servicio Nacional de Aprendizaje (SENA)  
-- **Centro:** [Nombre de tu Centro de Formación]  
-- **Programa:** Análisis y Desarrollo de Software  
+- **Instructor:** [John Freddy Becerra]
+- **Institución:** Servicio Nacional de Aprendizaje (SENA)
+- **Centro:** [Cento Industrial de Mantenimiento Integral]
+- **Programa:** Análisis y Desarrollo de Software
 
 ---
 
