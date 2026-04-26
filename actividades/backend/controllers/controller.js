@@ -1,6 +1,9 @@
 // Se importan los servicios necesarios para manejar las solicitudes relacionadas con los posts.
-import { getPosts as getPostsService, getUsers as getUsersService} from "../services/service.js";
-import { getComments as getCommentsService } from "../services/service.js";
+import {
+    getPosts as getPostsService,
+    getUsers as getUsersService,
+    getComments as getCommentsService
+} from "../services/service.js";
 
 // Controlador para manejar la solicitud de obtener los usuarios.
 // Utiliza el servicio correspondiente para obtener los datos
