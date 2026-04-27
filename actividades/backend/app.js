@@ -69,6 +69,8 @@ app.get(`/posts`, async (req, res) => {
     }
 });
 
+
+
 // Se define una ruta GET para '/comments' que utiliza el servicio correspondiente para obtener los comentarios
 app.get(`/comments`, async (req, res) => {
     try {
