@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Tareas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="contenedor">
+    <!-- SECCIÓN 1: Búsqueda de Usuario -->
+    <section class="seccion-busqueda">
+      <h2>Buscar Usuario</h2>
+      <div class="grupo-entrada">
+        <input type="text" id="id-usuario" placeholder="Ingrese ID de usuario...">
+        <button id="boton-buscar">Buscar</button>
+      </div>
+      <p id="mensaje-busqueda"></p>
+    </section>
+
+    <hr>
+
+    <!-- SECCIÓN 2: Formulario de Tareas (Bloqueado al inicio) -->
+    <section class="seccion-tareas">
+      <h2>Registrar Nueva Tarea</h2>
+      <form id="formulario-tareas" class="formulario-desactivado">
+        <div class="grupo-entrada">
+          <label>Título de la Tarea:</label>
+          <input type="text" id="titulo-tarea" placeholder="Ej: Firmar contrato" required disabled>
+        </div>
+
+        <div class="grupo-entrada">
+          <label>Descripción:</label>
+          <textarea id="descripcion-tarea" placeholder="Detalles de la tarea..." required disabled></textarea>
+        </div>
+
+        <button type="submit" id="boton-guardar-tarea" disabled>Guardar Tarea</button>
+      </form>
+    </section>
+  </div>
+
+  <script src="logica.js"></script>
+</body>
+
+</html>
