@@ -6,7 +6,7 @@ Este documento establece las reglas de convivencia, comunicación y estándares 
 | Nombre | Rol | Usuario de GitHub |
 | :--- | :--- | :--- |
 | [Sergio Álvarez] | Líder (Desarrollador Backend) | `@andre1985dominiocom` |
-| [Nombre del Aprendiz 2] | Desarrollador | `@usuario2` |
+| [Anderson Murcia] | Desarrollador | `@andersonea19` |
 | [Nombre del Aprendiz 3] | Desarrollador | `@usuario3` |
 
 ## 2. Canales de Comunicación
