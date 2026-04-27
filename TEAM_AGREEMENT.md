@@ -7,7 +7,7 @@ Este documento establece las reglas de convivencia, comunicación y estándares 
 | :--- | :--- | :--- |
 | [Sergio Álvarez] | Líder (Desarrollador Backend) | `@andre1985dominiocom` |
 | [Anderson Murcia] | Desarrollador frontend | `@andersonea19` |
-| [Michael Bnevaides] | Desarrollador frontend-B | `@michaelbenavides3` |
+| [Michael Bnevaides] | Desarrollador frontend | `@michaelbenavides3` |
 
 ## 2. Canales de Comunicación
 Para mantener el orden y separar lo profesional de lo personal, usaremos los siguientes canales:
