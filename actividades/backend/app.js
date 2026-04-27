@@ -1,10 +1,22 @@
 // Se importan las dependencias necesarias para crear el servidor y definir las rutas.
 import express from "express";
+import cors from "cors";
 import postsRoutes from "./routes/routes.js";
 import { getUsers } from "./services/service.js";
 
 // Se crea una instancia de Express para configurar el servidor.
 const app = express();
+
+//uso el midleware de cors, con esto abro puerta a las peticiones
+app.use(cors());
+app.use(express.json());
+
+//mis rutas
+app.use('/api', postsRoutes);
+
+app.listen(3000, () => {
+    console.log(`Servidor corriendo en el puerto 3000`);
+});
 
 // Se configuran los middlewares (funciones intermedias) necesarios para manejar las solicitudes
 // y las rutas de la aplicación.
