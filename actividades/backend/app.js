@@ -1,10 +1,6 @@
 // Se importan las dependencias necesarias para crear el servidor y definir las rutas.
 import express from "express";
-<<<<<<< developAndy
 import cors from "cors";
-=======
-import cors from "cors"; 
->>>>>>> develop
 import postsRoutes from "./routes/routes.js";
 import { getUsers } from "./services/service.js";
 
