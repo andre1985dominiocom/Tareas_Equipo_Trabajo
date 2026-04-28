@@ -12,7 +12,7 @@ botonBuscar.addEventListener('click', async () => {
     
     try {
       // const respuesta = await fetch(`http://localhost:3000/usuarios/${id}`);
-      const respuesta = await fetch(`http://localhost:3000/users/${id}`);
+        const respuesta = await fetch(`http://localhost:3000/users/${id}`);
 
         
         if (respuesta.ok) {
@@ -49,7 +49,7 @@ formularioTareas.addEventListener('submit', async (e) => {
         return;
     }
 
-  const datosTarea = { 
+    const datosTarea = { 
     userId: parseInt(usuarioIdActual),
     title: titulo,
     body: descripcion
@@ -57,7 +57,7 @@ formularioTareas.addEventListener('submit', async (e) => {
 
     try {
       // const respuesta = await fetch('http://localhost:3000/tareas',
-      const respuesta = await fetch('http://localhost:3000/api/posts',{
+        const respuesta = await fetch('http://localhost:3000/api/posts',{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datosTarea)

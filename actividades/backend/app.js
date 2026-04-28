@@ -2,14 +2,10 @@
 import express from "express";
 import cors from "cors";
 import postsRoutes from "./routes/routes.js";
-import { getUsers } from "./services/service.js";
+import { getUsers, getPosts, getComments, createPost } from "./services/service.js";
 
 // Se crea una instancia de Express para configurar el servidor.
 const app = express();
-
-//uso el midleware de cors, con esto abro puerta a las peticiones
-app.use(cors());
-app.use(express.json());
 
 // Se configuran los middlewares (funciones intermedias) necesarios para manejar las solicitudes
 // y las rutas de la aplicación.
@@ -43,7 +39,7 @@ app.post('/api/posts', (req, res) => {
         return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
 
-    console.log(`Tarea recibida para el usuario ${idUsuario}: ${titulo}`);
+    console.log(`Tarea recibida para el usuario ${userId}: ${title}`);
     
     // Aquí se guarda un array o base de datos
     res.status(201).json({ mensaje: "Tarea guardada con éxito" });
@@ -72,8 +68,6 @@ app.get(`/posts`, async (req, res) => {
         res.status(500).json({ error: `Error al obtener los posts` });
     }
 });
-
-
 
 // Se define una ruta GET para '/comments' que utiliza el servicio correspondiente para obtener los comentarios
 app.get(`/comments`, async (req, res) => {

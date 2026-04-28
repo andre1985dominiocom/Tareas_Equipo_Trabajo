@@ -21,9 +21,15 @@ export const getComments = async () => { // Se define una función asíncrona pa
     return response.data; // Se devuelve la data obtenida de la respuesta, que contiene los comentarios.
 };
 
+export const createPost = async ({ userId, title, body}) => {
+    const response = await axios.post(`${BASE_URL}posts`, { userId, title, body }); // Se realiza una solicitud POST a la URL de los posts, enviando el nuevo post en el cuerpo de la solicitud.
+    return response.data; // Se devuelve la data obtenida de la respuesta, que contiene el nuevo post creado.
+}
+
 // Se exportan los servicios para que puedan ser utilizados en otras partes de la aplicación.
 export default {
     getPosts,
     getUsers,
-    getComments
+    getComments,
+    createPost
 };
