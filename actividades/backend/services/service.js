@@ -32,6 +32,16 @@ export const updatePost = async (id, { userId, title, body }) => {
     return response.data;
 };
 
+// services/service.js
+export async function deletePost(id) {
+    // lógica para eliminar un post
+    const respuesta = await fetch(`http://localhost:3000/api/posts/${id}`, {
+        method: "DELETE"
+    });
+    return respuesta.ok;
+}
+
+
 // Se exportan los servicios para que puedan ser utilizados en otras partes de la aplicación.
 export default {
     getPosts,
