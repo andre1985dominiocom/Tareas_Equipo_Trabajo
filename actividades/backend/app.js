@@ -4,16 +4,20 @@ import cors from "cors";
 import postsRoutes from "./routes/routes.js";
 import { getUsers, getPosts, getComments, createPost, deletePost } from "./services/service.js";
 
-// Se crea una instancia de Express para configurar el servidor.
+// creo una instancia de Express para configurar el servidor.
 const app = express();
 
-// Se configuran los middlewares (funciones intermedias) necesarios para manejar las solicitudes
+// se configuran los middlewares (que son funciones intermedias) necesarios para manejar las solicitudes
 // y las rutas de la aplicación.
 app.use(cors());
 app.use(express.json());
 app.use(`/api`, postsRoutes);
 
-// RUTA PARA BUSCAR UN USUARIO ESPECÍFICO (Para habilitar el formulario)
+app.listen(3000, () => {
+    console.log("Servidor corriendo en el puerto 3000");
+})
+
+// ruta para buscar un usuario en especifico (para habilitar el formulario)
 app.get('/users/:id', async (req, res) => {
     try {
         const data = await getUsers();
@@ -30,24 +34,22 @@ app.get('/users/:id', async (req, res) => {
     }
 });
 
-// RUTA PARA RECIBIR TAREAS (Asociar tarea al usuario)
+// ruta para recibir tareas (asociar tarea al usuario)
 app.post('/api/posts', (req, res) => {
     const { userId, title, body } = req.body;
 
-    // VALIDACIÓN en el servidor
+    // hago validacion en el servidor
     if (!userId || !title || !body) {
         return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
 
     console.log(`Tarea recibida para el usuario ${userId}: ${title}`);
     
-    // Aquí se guarda un array o base de datos
+    // aquí se guarda un array o base de datos
     res.status(201).json({ mensaje: "Tarea guardada con éxito" });
 });
 
-// ------------------------------------------------------------
-
-// Se define una ruta GET para '/users' que utiliza el servicio correspondiente para obtener los usuarios
+// se define una ruta GET para '/users' que utiliza el servicio correspondiente para obtener los usuarios
 app.get('/users', async (req, res) => {
     try {
         const data = await getUsers();
@@ -58,7 +60,7 @@ app.get('/users', async (req, res) => {
     }
 });
 
-// Se define una ruta GET para '/posts' que utiliza el servicio correspondiente para obtener los posts
+// se define una ruta GET para '/posts' que utiliza el servicio correspondiente para obtener los posts
 app.get(`/posts`, async (req, res) => {
     try {
         const data = await getPosts();
@@ -69,7 +71,7 @@ app.get(`/posts`, async (req, res) => {
     }
 });
 
-// Se define una ruta GET para '/comments' que utiliza el servicio correspondiente para obtener los comentarios
+// se define una ruta GET para '/comments' que utiliza el servicio correspondiente para obtener los comentarios
 app.get(`/comments`, async (req, res) => {
     try {
         const data = await getComments();
@@ -78,19 +80,4 @@ app.get(`/comments`, async (req, res) => {
         console.error(error.message);
         res.status(500).json({ error: `Error al obtener los comentarios` });
     }
-});
-
-app.delete(`/delete`, async (req, res) => {
-    try {
-        const data = await deletePost();
-        res.json(data);
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ error: `Error al eliminar los post`});
-    }
-});
-
-// Se inicia el servidor en el puerto 3000 y se muestra un mensaje en la consola indicando que el servidor está corriendo.
-app.listen(3000, () => {
-    console.log(`Servidor corriendo en el puerto 3000`);
 });

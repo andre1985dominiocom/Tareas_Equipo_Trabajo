@@ -4,7 +4,7 @@ import {
     getUsers as getUsersService,
     getComments as getCommentsService,
     createPost as createPostService,
-    deletePost as deletePostService
+    updatePost as updatePostService
 } from "../services/service.js";
 
 // Controlador para manejar la solicitud de obtener los usuarios.
@@ -60,15 +60,16 @@ export const createPost = async (req, res) => {
     }
 }
 
-export const deletePost = async (req, res) => {
+export const updatePost = async (req, res) => {
     try {
-        const response = await deletePostService()
-        res.json(data);
+        const { id } = req.params; // ID de la tarea a editar
+        const { userId, title, body } = req.body;
+        const updated = await updatePostService(id, { userId, title, body });
+        res.json(updated);
     } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ error: `Error al eliminar el post` });
+        res.status(500).json({ error: "Error al actualizar la tarea" });
     }
-}
+};
 
 // Se exporta el controlador para que pueda ser utilizado en otras partes de la aplicación.
 export default {
@@ -76,5 +77,5 @@ export default {
     getPosts,
     getComments,
     createPost, 
-    deletePost
+    updatePost
 };
