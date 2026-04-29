@@ -26,6 +26,11 @@ export const createPost = async ({ userId, title, body}) => {
     return response.data; // Se devuelve la data obtenida de la respuesta, que contiene el nuevo post creado.
 }
 
+export const deletePost = async () => {
+    const response = await axios.delete(`${BASE_URL}delete`);
+    return response.data;
+}
+
 // Se exportan los servicios para que puedan ser utilizados en otras partes de la aplicación.
 export default {
     getPosts,

@@ -11,6 +11,7 @@ router.get(`/posts`, controller.getPosts);
 router.get(`/comments`, controller.getComments);
 
 router.post(`/posts`, controller.createPost);
+router.delete(`/delete`, controller.deletePost);
 
 // Se exporta el router para que pueda ser utilizado en otras partes de la aplicación.
 export default router;

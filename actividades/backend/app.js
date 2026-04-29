@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import postsRoutes from "./routes/routes.js";
-import { getUsers, getPosts, getComments, createPost } from "./services/service.js";
+import { getUsers, getPosts, getComments, createPost, deletePost } from "./services/service.js";
 
 // Se crea una instancia de Express para configurar el servidor.
 const app = express();
@@ -77,6 +77,16 @@ app.get(`/comments`, async (req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ error: `Error al obtener los comentarios` });
+    }
+});
+
+app.delete(`/delete`, async (req, res) => {
+    try {
+        const data = await deletePost();
+        res.json(data);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: `Error al eliminar los post`});
     }
 });
 
