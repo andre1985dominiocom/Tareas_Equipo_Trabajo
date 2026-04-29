@@ -3,7 +3,8 @@ import {
     getPosts as getPostsService,
     getUsers as getUsersService,
     getComments as getCommentsService,
-    createPost as createPostService
+    createPost as createPostService,
+    deletePost as deletePostService
 } from "../services/service.js";
 
 // Controlador para manejar la solicitud de obtener los usuarios.
@@ -59,10 +60,21 @@ export const createPost = async (req, res) => {
     }
 }
 
+export const deletePost = async (req, res) => {
+    try {
+        const response = await deletePostService()
+        res.json(data);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: `Error al eliminar el post` });
+    }
+}
+
 // Se exporta el controlador para que pueda ser utilizado en otras partes de la aplicación.
 export default {
     getUsers,
     getPosts,
     getComments,
-    createPost
+    createPost, 
+    deletePost
 };
