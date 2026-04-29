@@ -4,6 +4,7 @@ const botonBuscar = document.getElementById('boton-buscar');
 const mensajeBusqueda = document.getElementById('mensaje-busqueda');
 const formularioTareas = document.getElementById('formulario-tareas');
 const listaTareas = document.getElementById('contenedor-tareas');
+const mensajeTarea = document.getElementById('mensaje-tarea');
 
 //variables para podefinir estado de edicion y usuarios que van a ir cambiando, con sus respectivas tareas
 let usuarioIdActual = null; 

@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import postsRoutes from "./routes/routes.js";
-import { getUsers, getPosts, getComments, createPost } from "./services/service.js";
+import { getUsers, getPosts, getComments, createPost, deletePost } from "./services/service.js";
 
 // creo una instancia de Express para configurar el servidor.
 const app = express();
