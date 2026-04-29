@@ -3,8 +3,47 @@ const idUsuarioInput = document.getElementById('id-usuario');
 const botonBuscar = document.getElementById('boton-buscar');
 const mensajeBusqueda = document.getElementById('mensaje-busqueda');
 const formularioTareas = document.getElementById('formulario-tareas');
+const listaTareas = document.getElementById('contenedor-tareas');
 
 let usuarioIdActual = null; // Para "asociar" la tarea al usuario encontrado
+
+// Función para obtener tareas por usuario
+async function obtenerTareasPorUsuario(userId) {
+    try {
+        const respuesta = await fetch(`http://localhost:3000/api/users/${userId}/posts`);
+        const tareas = await respuesta.json();
+
+        const tareaUsuario = tareas.filter(tarea => tarea.userId === parseInt(userId));
+
+        renderizarTareas(tareaUsuario);
+    } catch (error) {
+        console.error(`Error al obtener tareas ${error}`);
+    }
+}
+
+// Función para renderizar tareas en el DOM
+function renderizarTareas(tareas) {
+    const contenedor = document.getElementById("contenedor-tareas");
+
+    contenedor.innerHTML = "";
+
+    if (tareas.length === 0) {
+        contenedor.innerHTML = "<p>No hay tareas para este usuario.</p>";
+        return;
+    }
+
+    tareas.forEach(tarea => {
+        const div = document.createElement("div");
+        div.classList.add("tarjeta-tarea");
+
+        div.innerHTML = `
+            <h3>${tarea.title}</h3>
+            <p>${tarea.body}</p>
+        `;
+
+        contenedor.appendChild(div);
+    });
+}
 
 // Lógica para BUSCAR Y HABILITAR
 botonBuscar.addEventListener('click', async () => {
@@ -49,7 +88,7 @@ formularioTareas.addEventListener('submit', async (e) => {
         return;
     }
 
-    const datosTarea = { 
+    const datosTarea = {
     userId: parseInt(usuarioIdActual),
     title: titulo,
     body: descripcion
