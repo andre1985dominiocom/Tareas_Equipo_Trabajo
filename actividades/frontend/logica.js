@@ -4,6 +4,7 @@ const botonBuscar = document.getElementById('boton-buscar');
 const mensajeBusqueda = document.getElementById('mensaje-busqueda');
 const formularioTareas = document.getElementById('formulario-tareas');
 const listaTareas = document.getElementById('contenedor-tareas');
+const mensajeTarea = document.getElementById('mensaje-tarea');
 
 let usuarioIdActual = null; // Para "asociar" la tarea al usuario encontrado
 
@@ -58,7 +59,7 @@ botonBuscar.addEventListener('click', async () => {
             const usuario = await respuesta.json();
             usuarioIdActual = id; // Asociamos el ID
             
-            mensajeBusqueda.innerText = `Usuario: ${usuario.nombre} encontrado.`;
+            mensajeBusqueda.innerText = `Usuario: ${usuario.name} encontrado.`;
             mensajeBusqueda.style.color = "green";
 
             // Habilitamos el formulario quitando la clase y el atributo disabled
@@ -83,8 +84,12 @@ formularioTareas.addEventListener('submit', async (e) => {
     const descripcion = document.getElementById('descripcion-tarea').value;
 
     // VALIDACIÓN de campos completos
-    if (!titulo.trim() || !descripcion.trim()) {
-        alert("Todos los campos son obligatorios.");
+  if (!titulo.trim() || !descripcion.trim()) {
+
+        // alert("Todos los campos son obligatorios.");
+        mensajeTarea.innerText = "Error: campos vacios detectados, complete todo los campos para seguir con el proceso";
+        mensajeTarea.style.color = "orange";
+        
         return;
     }
 
