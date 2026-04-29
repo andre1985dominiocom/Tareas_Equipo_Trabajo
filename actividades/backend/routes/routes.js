@@ -8,9 +8,8 @@ const router = express.Router(); // Se define una ruta GET para '/posts' que uti
 // Se define una ruta GET para '/posts' que utiliza el controlador correspondiente
 router.get('/users', controller.getUsers);
 router.get(`/posts`, controller.getPosts);
-router.get(`/comments`, controller.getComments);
-
 router.post(`/posts`, controller.createPost);
+router.put('/posts/:id', controller.updatePost); // para RF-03
 
 // Se exporta el router para que pueda ser utilizado en otras partes de la aplicación.
 export default router;
