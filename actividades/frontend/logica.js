@@ -1,4 +1,4 @@
-//  Referencias a los elementos
+// Referencias a los elementos
 const idUsuarioInput = document.getElementById('id-usuario');
 const botonBuscar = document.getElementById('boton-buscar');
 const mensajeBusqueda = document.getElementById('mensaje-busqueda');
@@ -6,113 +6,188 @@ const formularioTareas = document.getElementById('formulario-tareas');
 const listaTareas = document.getElementById('contenedor-tareas');
 const mensajeTarea = document.getElementById('mensaje-tarea');
 
-let usuarioIdActual = null; // Para "asociar" la tarea al usuario encontrado
+//variables para podefinir estado de edicion y usuarios que van a ir cambiando, con sus respectivas tareas
+let usuarioIdActual = null; 
+let modoEdicion = false; 
+let tareaIdAEditar = null;
 
-// Función para obtener tareas por usuario
-async function obtenerTareasPorUsuario(userId) {
-    try {
-        const respuesta = await fetch(`http://localhost:3000/api/users/${userId}/posts`);
-        const tareas = await respuesta.json();
+//una url base, que se podra manipular
+const API_URL = "http://localhost:3000/api";
 
-        const tareaUsuario = tareas.filter(tarea => tarea.userId === parseInt(userId));
-
-        renderizarTareas(tareaUsuario);
-    } catch (error) {
-        console.error(`Error al obtener tareas ${error}`);
-    }
+// rfn-03
+function mostrarNotificacion(mensaje, tipo = "success") {
+    mensajeBusqueda.innerText = mensaje;
+    mensajeBusqueda.style.color = tipo === "success" ? "green" : "red";
+    setTimeout(() => mensajeBusqueda.innerText = "", 3000);
 }
 
-// Función para renderizar tareas en el DOM
+// con esta funcion obtengo los datos
+async function obtenerTareasPorUsuario(userId) {
+    try {
+        // Usamos la ruta de posts general y filtramos por userId
+        const respuesta = await fetch(`${API_URL}/posts`);
+        const tareas = await respuesta.json();
+        const tareasFiltradas = tareas.filter(t => t.userId == userId);
+
+        renderizarTareas(tareasFiltradas);
+    } catch (error) {
+        console.error(`Error al obtener tareas: ${error}`);
+    } 
+}
+
+// funcion para renderizar el dom
 function renderizarTareas(tareas) {
-    const contenedor = document.getElementById("contenedor-tareas");
-
-    contenedor.innerHTML = "";
-
+    listaTareas.innerHTML = "";
     if (tareas.length === 0) {
-        contenedor.innerHTML = "<p>No hay tareas para este usuario.</p>";
+        listaTareas.innerHTML = "<p>No hay tareas registradas para este usuario.</p>";
         return;
     }
 
+    //bucle para imprimir tareas registradas/asignadas por el usuario 
     tareas.forEach(tarea => {
         const div = document.createElement("div");
         div.classList.add("tarjeta-tarea");
-
-        div.innerHTML = `
-            <h3>${tarea.title}</h3>
-            <p>${tarea.body}</p>
+        div.innerHTML = `   
+            <div id="tarea-${tarea.id}">
+                <h3>${tarea.title}</h3>
+                <p>${tarea.body}</p>
+                <button onclick="prepararEdicion(${tarea.id}, '${tarea.title}', '${tarea.body}')" style="background: #007bff; color: white; border: none; padding: 5px; cursor: pointer;">Editar</button>
+            </div>
         `;
-
-        contenedor.appendChild(div);
+        listaTareas.appendChild(div);
     });
 }
 
-// Lógica para BUSCAR Y HABILITAR
+// para preparas la edicion
+window.prepararEdicion = (id, titulo, cuerpo) => {
+    modoEdicion = true;
+    tareaIdAEditar = id;
+    // cargamos los datos actuales en los inputs
+    document.getElementById('titulo-tarea').value = titulo;
+    document.getElementById('descripcion-tarea').value = cuerpo;
+
+    // cambio visual: avisamos al usuario que está editando
+    const boton = document.getElementById('boton-guardar-tarea');
+    boton.innerText = "Actualizar Tarea";
+    boton.style.backgroundColor = "#ffc107"; // un colorcito naranja para "advertencia/edición"
+    boton.style.color = "black";
+
+    // hace foco en el input para que empiece a escribir
+    document.getElementById('titulo-tarea').focus();
+    
+    mostrarNotificacion("Editando tarea #" + id, "success");
+}
+
+// busqueda y habilitacion
 botonBuscar.addEventListener('click', async () => {
     const id = idUsuarioInput.value;
+    if (!id) return mostrarNotificacion("Ingresa un ID", "red");
     
     try {
-      // const respuesta = await fetch(`http://localhost:3000/usuarios/${id}`);
-        const respuesta = await fetch(`http://localhost:3000/users/${id}`);
+    const respuesta = await fetch(`${API_URL}/users`);
 
-        
-        if (respuesta.ok) {
-            const usuario = await respuesta.json();
-            usuarioIdActual = id; // Asociamos el ID
-            
-            mensajeBusqueda.innerText = `Usuario: ${usuario.name} encontrado.`;
-            mensajeBusqueda.style.color = "green";
-
-            // Habilitamos el formulario quitando la clase y el atributo disabled
-            formularioTareas.classList.remove('formulario-desactivado');
-            document.querySelectorAll('#formulario-tareas input, #formulario-tareas textarea, #boton-guardar-tarea')
-                    .forEach(el => el.disabled = false);
-        } else {
-            throw new Error("No existe");
-        }
-    } catch (error) {
-        mensajeBusqueda.innerText = "Error: Usuario no encontrado.";
-        mensajeBusqueda.style.color = "red";
-        formularioTareas.classList.add('formulario-desactivado');
+    // Validar respuesta HTTP primero
+    if (!respuesta.ok) {
+        throw new Error("Error en la petición");
     }
+
+    // Convertir UNA sola vez
+    const usuarios = await respuesta.json();
+
+    // Buscar usuario por ID
+    const usuario = usuarios.find(u => u.id == id);
+
+    if (usuario) {
+        usuarioIdActual = id;
+
+        mensajeBusqueda.innerText = `Usuario: ${usuario.name} encontrado.`;
+        mensajeBusqueda.style.color = "green";
+
+        mostrarNotificacion(`Usuario: ${usuario.name} encontrado.`, "success");
+
+        // Activar formulario
+        formularioTareas.classList.remove('formulario-desactivado');
+
+        document
+            .querySelectorAll('#formulario-tareas input, #formulario-tareas textarea, #boton-guardar-tarea')
+            .forEach(el => el.disabled = false);
+
+        // Cargar tareas automáticamente
+        obtenerTareasPorUsuario(id);
+
+    } else {
+        throw new Error("Usuario no existe");
+    }
+
+} catch (error) {
+    mostrarNotificacion("Error: Usuario no encontrado.", "red");
+
+    formularioTareas.classList.add('formulario-desactivado');
+}
 });
 
-// Lógica para ENVIAR SIN RECARGAR y VALIDAR
+// evniar por medio de post y put
 formularioTareas.addEventListener('submit', async (e) => {
-    e.preventDefault(); // ¡IMPORTANTE! Evita que la página se recargue
+    e.preventDefault();
 
-    const titulo = document.getElementById('titulo-tarea').value;
-    const descripcion = document.getElementById('descripcion-tarea').value;
+    const titulo = document.getElementById('titulo-tarea').value.trim();
+    const descripcion = document.getElementById('descripcion-tarea').value.trim();
 
-    // VALIDACIÓN de campos completos
-    if (!titulo.trim() || !descripcion.trim()) {
-
-        // alert("Todos los campos son obligatorios.");
-        mensajeTarea.innerText = "Error: campos vacios detectados, complete todo los campos para seguir con el proceso";
+    // ✅ VALIDACIÓN de campos
+    if (!titulo || !descripcion) {
+        mensajeTarea.innerText = "Error: campos vacíos detectados, completa todos los campos.";
         mensajeTarea.style.color = "orange";
-        
+
+        alert("Por favor, completa todos los campos.");
         return;
     }
 
     const datosTarea = {
-    userId: parseInt(usuarioIdActual),
-    title: titulo,
-    body: descripcion
+        userId: parseInt(usuarioIdActual),
+        title: titulo,
+        body: descripcion
     };
 
     try {
-      // const respuesta = await fetch('http://localhost:3000/tareas',
-        const respuesta = await fetch('http://localhost:3000/api/posts',{
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        // si modoEdicion es true, usamos PUT, sino POST (rf-03)
+        const metodo = modoEdicion ? 'PUT' : 'POST';
+        const url = modoEdicion
+            ? `${API_URL}/posts/${tareaIdAEditar}`
+            : `${API_URL}/posts`;
+
+        const respuesta = await fetch(url, {
+            method: metodo,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(datosTarea)
         });
 
         if (respuesta.ok) {
-            alert("¡Tarea registrada correctamente!");
-            formularioTareas.reset(); // Limpia los campos
-            // Opcional: volver a bloquear el formulario tras éxito
+            alert(
+                modoEdicion
+                    ? "¡Tarea actualizada correctamente!"
+                    : "¡Tarea registrada con éxito!"
+            );
+
+            // resetear el estado
+            modoEdicion = false;
+            tareaIdAEditar = null;
+
+            // devolver el botón a su estado original
+            const boton = document.getElementById('boton-guardar-tarea');
+            boton.innerText = "Guardar Tarea";
+            boton.style.backgroundColor = "#28a745";
+            boton.style.color = "white";
+
+            // limpiar formulario
+            formularioTareas.reset();
+
+            // recargar lista
+            obtenerTareasPorUsuario(usuarioIdActual);
         }
+
     } catch (error) {
-        alert("Hubo un error al conectar con el servidor.");
+        alert("Error de comunicación con el servidor.");
     }
 });

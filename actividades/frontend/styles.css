@@ -27,6 +27,11 @@ h2 { color: #333; font-size: 1.2rem; }
     flex-direction: column;
 }
 
+
+textarea {
+    resize: none;
+}
+
 input, textarea {
     padding: 10px;
     border: 1px solid #ddd;
