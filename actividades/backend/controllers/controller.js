@@ -61,15 +61,6 @@ export const createPost = async (req, res) => {
     }
 }
 
-export const deletePost = async (req, res) => {
-    try {
-        const response = await deletePostService()
-        res.json(data);
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ error: `Error al eliminar el post` });
-    }
-}
 export const updatePost = async (req, res) => {
     try {
         const { id } = req.params; // ID de la tarea a editar
@@ -79,7 +70,7 @@ export const updatePost = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Error al actualizar la tarea" });
     }
-};
+}
 
 // Se exporta el controlador para que pueda ser utilizado en otras partes de la aplicación.
 export default {

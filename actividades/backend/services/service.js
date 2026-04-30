@@ -26,15 +26,26 @@ export const createPost = async ({ userId, title, body}) => {
     return response.data; // Se devuelve la data obtenida de la respuesta, que contiene el nuevo post creado.
 }
 
-export const deletePost = async () => {
-    const response = await axios.delete(`${BASE_URL}delete`);
+// Servicio para actualizar una tarea (PUT)
+export const updatePost = async (id, { userId, title, body }) => {
+    const response = await axios.put(`${BASE_URL}posts/${id}`, { userId, title, body });
     return response.data;
+};
+
+// services/service.js
+export async function deletePost(id) {
+    // lógica para eliminar un post
+    const respuesta = await fetch(`http://localhost:3000/api/posts/${id}`, {
+        method: "DELETE"
+    });
+    return respuesta.ok;
 }
 // Servicio para actualizar una tarea (PUT)
 export const updatePost = async (id, { userId, title, body }) => {
     const response = await axios.put(`${BASE_URL}posts/${id}`, { userId, title, body });
     return response.data;
 };
+
 
 // Se exportan los servicios para que puedan ser utilizados en otras partes de la aplicación.
 export default {

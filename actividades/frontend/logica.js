@@ -117,6 +117,27 @@ botonBuscar.addEventListener('click', async () => {
 
     } else {
         throw new Error("Usuario no existe");
+        const respuesta = await fetch(`${API_URL}/users`);
+        const usuarios = await respuesta.json();
+        const usuario = usuarios.find(u => u.id == id);
+
+        if (usuario) {
+            usuarioIdActual = id;
+            mostrarNotificacion(`Usuario: ${usuario.name} encontrado.`, "success");
+
+            // activacion del formulario
+            formularioTareas.classList.remove('formulario-desactivado');
+            document.querySelectorAll('#formulario-tareas input, #formulario-tareas textarea, #boton-guardar-tarea')
+                    .forEach(el => el.disabled = false);
+
+            // cargar tareas automáticamente al encontrar usuario
+            obtenerTareasPorUsuario(id);
+        } else {
+            throw new Error("No existe");
+        }
+    } catch (error) {
+        mostrarNotificacion("Error: Usuario no encontrado.", "red");
+        formularioTareas.classList.add('formulario-desactivado');
     }
 
 } catch (error) {
@@ -133,15 +154,14 @@ formularioTareas.addEventListener('submit', async (e) => {
     const titulo = document.getElementById('titulo-tarea').value.trim();
     const descripcion = document.getElementById('descripcion-tarea').value.trim();
 
-    // ✅ VALIDACIÓN de campos
+    //validacion de campos
     if (!titulo || !descripcion) {
         mensajeTarea.innerText = "Error: campos vacíos detectados, completa todos los campos.";
         mensajeTarea.style.color = "orange";
-
+        
         alert("Por favor, completa todos los campos.");
         return;
-    }
-
+      
     const datosTarea = {
         userId: parseInt(usuarioIdActual),
         title: titulo,

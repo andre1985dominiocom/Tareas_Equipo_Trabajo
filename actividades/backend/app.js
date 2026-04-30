@@ -81,18 +81,3 @@ app.get(`/comments`, async (req, res) => {
         res.status(500).json({ error: `Error al obtener los comentarios` });
     }
 });
-
-app.delete(`/delete`, async (req, res) => {
-    try {
-        const data = await deletePost();
-        res.json(data);
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ error: `Error al eliminar los post`});
-    }
-});
-
-// Se inicia el servidor en el puerto 3000 y se muestra un mensaje en la consola indicando que el servidor está corriendo.
-app.listen(3000, () => {
-    console.log(`Servidor corriendo en el puerto 3000`);
-});
