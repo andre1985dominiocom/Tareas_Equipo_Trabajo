@@ -84,7 +84,7 @@ formularioTareas.addEventListener('submit', async (e) => {
     const descripcion = document.getElementById('descripcion-tarea').value;
 
     // VALIDACIÓN de campos completos
-  if (!titulo.trim() || !descripcion.trim()) {
+    if (!titulo.trim() || !descripcion.trim()) {
 
         // alert("Todos los campos son obligatorios.");
         mensajeTarea.innerText = "Error: campos vacios detectados, complete todo los campos para seguir con el proceso";

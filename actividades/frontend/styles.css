@@ -15,6 +15,10 @@ body {
     max-width: 500px;
 }
 
+textarea {
+    resize: none;
+}
+
 h2 { color: #333; font-size: 1.2rem; }
 
 .grupo-entrada {
@@ -45,8 +49,8 @@ button:hover { background-color: #218838; }
 
 /* ESTADO DESACTIVADO: Se aplica al formulario antes de encontrar al usuario */
 .formulario-desactivado {
-    opacity: 0.4;
-    pointer-events: none; /* Bloquea clics */
+    opacity: 0.4; 
+    pointer-events: none; 
     filter: grayscale(1);
 }
 
