@@ -72,12 +72,22 @@ export const updatePost = async (req, res) => {
     }
 }
 
+export const deletePost = async (req, res) => {
+    try {
+        const { id } = req.params; // ID del post a eliminar
+        await deletePostService(id); // Llama al servicio para eliminar el post
+        res.json({ message: "Post eliminado correctamente"});
+    } catch (error) {
+        res.status(500).json({ error: "Error al eliminar el post" });
+    }
+}
+
 // Se exporta el controlador para que pueda ser utilizado en otras partes de la aplicación.
 export default {
     getUsers,
     getPosts,
     getComments,
-    createPost, 
+    createPost,
     deletePost,
     updatePost
 };

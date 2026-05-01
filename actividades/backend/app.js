@@ -2,7 +2,12 @@
 import express from "express";
 import cors from "cors";
 import postsRoutes from "./routes/routes.js";
-import { getUsers, getPosts, getComments, createPost, deletePost } from "./services/service.js";
+import { getUsers,
+        getPosts,
+        getComments,
+        createPost,
+        updatePost,
+        deletePost } from "./services/service.js";
 
 // creo una instancia de Express para configurar el servidor.
 const app = express();
@@ -79,5 +84,46 @@ app.get(`/comments`, async (req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ error: `Error al obtener los comentarios` });
+    }
+});
+
+// se define una ruta POST para '/posts' que utiliza el servicio correspondiente para crear un nuevo post
+app.post(`/posts`, async (req, res) => {
+    try {
+        const { userId, title, body } = req.body;
+        const newPost = await createPost({ userId, title, body });
+        res.status(201).json(newPost);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: `Error al crear el post` });
+    }
+});
+
+// se define una ruta PUT para '/posts/:id' que utiliza el servicio correspondiente para actualizar un post existente
+app.put(`/posts/:id`, async (req, res) => {
+    try {
+        const { id } = req.params; // ID del post a actualizar
+        const { userId, title, body } = req.body;
+        const updatedPost = await updatePost(id, { userId, title, body });
+        res.json(updatedPost);
+    }   catch (error)  {
+        console.error(error.message);
+        res.status(500).json({ error: `Error al actualizar el post` });
+    }
+});
+
+// se define una ruta DELETE para '/posts/:id' que utiliza el servicio correspondiente para eliminar un post existente
+app.delete(`/posts/:id`, async (req, res) => {
+    try {
+        const { id } = req.params; // ID del post a eliminar
+        const deleted = await deletePost(id);
+        if (deleted) {
+            res.json({ message: "Post eliminado correctamente" });
+        } else {
+            res.status(404).json({ error: "Post no encontrado" });
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: `Error al eliminar el post` });
     }
 });
