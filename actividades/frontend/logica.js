@@ -84,6 +84,39 @@ botonBuscar.addEventListener('click', async () => {
     if (!id) return mostrarNotificacion("Ingresa un ID", "red");
     
     try {
+    const respuesta = await fetch(`${API_URL}/users`);
+
+    // Validar respuesta HTTP primero
+    if (!respuesta.ok) {
+        throw new Error("Error en la petición");
+    }
+
+    // Convertir UNA sola vez
+    const usuarios = await respuesta.json();
+
+    // Buscar usuario por ID
+    const usuario = usuarios.find(u => u.id == id);
+
+    if (usuario) {
+        usuarioIdActual = id;
+
+        mensajeBusqueda.innerText = `Usuario: ${usuario.name} encontrado.`;
+        mensajeBusqueda.style.color = "green";
+
+        mostrarNotificacion(`Usuario: ${usuario.name} encontrado.`, "success");
+
+        // Activar formulario
+        formularioTareas.classList.remove('formulario-desactivado');
+
+        document
+            .querySelectorAll('#formulario-tareas input, #formulario-tareas textarea, #boton-guardar-tarea')
+            .forEach(el => el.disabled = false);
+
+        // Cargar tareas automáticamente
+        obtenerTareasPorUsuario(id);
+
+    } else {
+        throw new Error("Usuario no existe");
         const respuesta = await fetch(`${API_URL}/users`);
         const usuarios = await respuesta.json();
         const usuario = usuarios.find(u => u.id == id);
@@ -106,6 +139,12 @@ botonBuscar.addEventListener('click', async () => {
         mostrarNotificacion("Error: Usuario no encontrado.", "red");
         formularioTareas.classList.add('formulario-desactivado');
     }
+
+} catch (error) {
+    mostrarNotificacion("Error: Usuario no encontrado.", "red");
+
+    formularioTareas.classList.add('formulario-desactivado');
+}
 });
 
 // evniar por medio de post y put
@@ -115,11 +154,14 @@ formularioTareas.addEventListener('submit', async (e) => {
     const titulo = document.getElementById('titulo-tarea').value.trim();
     const descripcion = document.getElementById('descripcion-tarea').value.trim();
 
+    //validacion de campos
     if (!titulo || !descripcion) {
+        mensajeTarea.innerText = "Error: campos vacíos detectados, completa todos los campos.";
+        mensajeTarea.style.color = "orange";
+        
         alert("Por favor, completa todos los campos.");
         return;
-    }
-
+      
     const datosTarea = {
         userId: parseInt(usuarioIdActual),
         title: titulo,
@@ -129,33 +171,42 @@ formularioTareas.addEventListener('submit', async (e) => {
     try {
         // si modoEdicion es true, usamos PUT, sino POST (rf-03)
         const metodo = modoEdicion ? 'PUT' : 'POST';
-        const url = modoEdicion ? `${API_URL}/posts/${tareaIdAEditar}` : `${API_URL}/posts`;
+        const url = modoEdicion
+            ? `${API_URL}/posts/${tareaIdAEditar}`
+            : `${API_URL}/posts`;
 
         const respuesta = await fetch(url, {
             method: metodo,
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(datosTarea)
         });
 
         if (respuesta.ok) {
-            alert(modoEdicion ? "¡Tarea actualizada correctamente!" : "¡Tarea registrada con éxito!");
-            
+            alert(
+                modoEdicion
+                    ? "¡Tarea actualizada correctamente!"
+                    : "¡Tarea registrada con éxito!"
+            );
+
             // resetear el estado
             modoEdicion = false;
             tareaIdAEditar = null;
 
-            // devuelvo el botón a su estado original
+            // devolver el botón a su estado original
             const boton = document.getElementById('boton-guardar-tarea');
             boton.innerText = "Guardar Tarea";
-            boton.style.backgroundColor = "#28a745"; 
+            boton.style.backgroundColor = "#28a745";
             boton.style.color = "white";
-            
+
+            // limpiar formulario
             formularioTareas.reset();
 
-            
-            // recargar lista para ver cambios
+            // recargar lista
             obtenerTareasPorUsuario(usuarioIdActual);
         }
+
     } catch (error) {
         alert("Error de comunicación con el servidor.");
     }

@@ -4,6 +4,7 @@ import {
     getUsers as getUsersService,
     getComments as getCommentsService,
     createPost as createPostService,
+    deletePost as deletePostService,
     updatePost as updatePostService
 } from "../services/service.js";
 
@@ -69,7 +70,7 @@ export const updatePost = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Error al actualizar la tarea" });
     }
-};
+}
 
 // Se exporta el controlador para que pueda ser utilizado en otras partes de la aplicación.
 export default {
@@ -77,5 +78,6 @@ export default {
     getPosts,
     getComments,
     createPost, 
+    deletePost,
     updatePost
 };

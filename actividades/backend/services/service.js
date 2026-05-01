@@ -40,6 +40,11 @@ export async function deletePost(id) {
     });
     return respuesta.ok;
 }
+// Servicio para actualizar una tarea (PUT)
+export const updatePost = async (id, { userId, title, body }) => {
+    const response = await axios.put(`${BASE_URL}posts/${id}`, { userId, title, body });
+    return response.data;
+};
 
 
 // Se exportan los servicios para que puedan ser utilizados en otras partes de la aplicación.
