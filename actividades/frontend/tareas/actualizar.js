@@ -1,15 +1,16 @@
 import { updatePost } from "../api/cliente.js";
 import { listarTareas } from "./listar.js";
 
-export const actualizarTarea = async (id) => {
+export const actualizarTarea = async (id, usuarioIdActual) => {
     const nuevaTarea = prompt("Ingresar la nueva tarea: ");
+    const nuevaDescripcion = prompt("Ingresar la nueva descripción: ");
 
-    if (!nuevaTarea) return;
+    if (!nuevaTarea || !nuevaDescripcion) return;
 
     await updatePost(id, {
-        userId: "",
+        userId: parseInt(usuarioIdActual),
         title: nuevaTarea,
-        body: ""
+        body: nuevaDescripcion
     });
-    listarTareas();
-} 
+    listarTareas(usuarioIdActual);
+}

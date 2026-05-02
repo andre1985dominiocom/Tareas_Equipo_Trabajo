@@ -1,29 +1,30 @@
-import { getPosts } from "../api/cliente.js";
+import { getPostsByUser } from "../api/cliente.js";
 import { eliminarTarea } from "./eliminar.js";
 import { actualizarTarea } from "./actualizar.js";
 
-export const listarTareas = async () => {
+export const listarTareas = async (userId) => {
 
     const lista = document.getElementById("contenedor-tareas");
     
     if (!lista) return;
     lista.innerHTML = "";
 
-    const tareas = await getPosts();
+    const tareas = await getPostsByUser(userId);
     console.log("Tareas obtenidas", tareas);
 
-    tareas.slice(1, 10).array.forEach(tarea => {
+    tareas.forEach(tarea => {
 
-        const li = document.createElement("li");
-        li.classList.add("seccion-tareas");
+        const div = document.createElement("div");
+        div.classList.add("seccion-lista");
 
-        li.innerHTML = `
+        div.innerHTML = `
             ${tarea.title}
-            <button class=btn-actualizar">Actualizar</button>
-            <button class=btn-eliminar">Eliminar</button>`;
+            ${tarea.body}
+            <button class="btn-actualizar">Actualizar</button>
+            <button class="btn-eliminar">Eliminar</button>`;
 
-        const btnActualizar = li.querySelector("boton-actualizar-tarea");
-        const btnEliminar = li.querySelector("boton-eliminar-tarea");
+        const btnActualizar = div.querySelector(".btn-actualizar");
+        const btnEliminar = div.querySelector(".btn-eliminar");
 
         btnEliminar.addEventListener("click", () => {
             eliminarTarea(tarea.id, tarea.userId);
@@ -32,6 +33,6 @@ export const listarTareas = async () => {
         btnActualizar.addEventListener("click", () => {
             actualizarTarea(tarea.id, tarea.userId);
         });
-        lista.appendChild();
+        lista.appendChild(div);
     });
 };

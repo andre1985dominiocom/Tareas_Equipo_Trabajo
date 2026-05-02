@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +8,9 @@
 </head>
 
 <body>
-
   <div class="contenedor">
-    <!-- SECCIÓN 1: Búsqueda de Usuario -->
+
+<!-- SECCIÓN 1: Búsqueda de Usuario -->
     <section class="seccion-busqueda">
       <h2>Buscar Usuario</h2>
       <div class="grupo-entrada">
@@ -21,41 +20,39 @@
       <p id="mensaje-busqueda"></p>
     </section>
 
-    <hr>
+<hr>
 
-    <!-- SECCIÓN 2: Formulario de Tareas (Bloqueado al inicio) -->
-    <section class="seccion-tareas">
-      <h2>Registrar Nueva Tarea</h2>
-      <form id="formulario-tareas" class="formulario-desactivado">
-        <div class="grupo-entrada">
-          <label>Título de la Tarea:</label>
-          <input type="text" id="titulo-tarea" placeholder="Ej: Firmar contrato" required disabled>
-        </div>
+<!-- SECCIÓN 2: Formulario de Tareas -->
+  <section class="seccion-tareas">
+    <h2>Registrar Nueva Tarea</h2>
 
-        
-        <div class="grupo-entrada">
-          <label>Descripción:</label>
-          <textarea id="descripcion-tarea" placeholder="Detalles de la tarea..." required disabled></textarea>
-        </div>
-        
-        <div class="contenedor-btn">
-          <button type="submit" id="boton-guardar-tarea" disabled>Guardar Tarea</button>
+    <form id="formulario-tareas" class="formulario-desactivado">
+    
+      <div class="grupo-entrada">
+        <label>Título de la Tarea:</label>
+        <input type="text" id="titulo-tarea" placeholder="Ej: Firmar contrato" required disabled>
+      </div>
 
-          <button type="submit" id="boton-actualizar-tarea">Actualizar</button>
-          
-            <button type="submit" id="boton-eliminar-tarea">Eliminar</button>
-        </div>
-            
-        <section class="seccion-lista">
-          <h2>Tareas del Usuario</h2>
-          <div id="contenedor-tareas"></div>
-        </section>
-        
-      </form>
+      <div class="grupo-entrada">
+        <label>Descripción:</label>
+        <textarea id="descripcion-tarea" placeholder="Detalles de la tarea..." required disabled></textarea>
+      </div>
+    
+      <div class="contenedor-btn">
+        <button type="submit" id="boton-guardar-tarea" disabled>Guardar Tarea</button>
+        <button class="btn-actualizar" type="button" id="boton-actualizar-tarea">Actualizar</button>
+        <button class="btn-eliminar" type="button" id="boton-eliminar-tarea">Eliminar</button>
+      </div>
+    </form>
+  </section>
+
+<!--LISTADO FUERA DEL FORM -->
+    <section class="seccion-lista">
+      <h2>Tareas del Usuario</h2>
+      <div id="contenedor-tareas"></div>
     </section>
   </div>
 
-  <script src="logica.js"></script>
+  <script src="./logica.js" type="module"></script>
 </body>
-
 </html>
