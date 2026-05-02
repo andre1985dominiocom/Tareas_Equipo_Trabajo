@@ -7,7 +7,10 @@ const botonBuscar = document.getElementById('boton-buscar');
 const mensajeBusqueda = document.getElementById('mensaje-busqueda');
 const formularioTareas = document.getElementById('formulario-tareas');
 
-let usuarioIdActual = null; // Para "asociar" la tarea al usuario encontrado
+//variables para podefinir estado de edicion y usuarios que van a ir cambiando, con sus respectivas tareas
+let usuarioIdActual = null; 
+let modoEdicion = false; 
+let tareaIdAEditar = null;
 
 botonBuscar.addEventListener("click", async () => {
     const id = idUsuarioInput.value.trim();
@@ -38,6 +41,12 @@ botonBuscar.addEventListener("click", async () => {
         mensajeBusqueda.style.color = "red";
         usuarioIdActual = null; // Limpiamos el ID asociado
     }
+
+} catch (error) {
+    mostrarNotificacion("Error: Usuario no encontrado.", "red");
+
+    formularioTareas.classList.add('formulario-desactivado');
+}
 });
 
 // Evento para crear tarea
