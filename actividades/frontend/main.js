@@ -1,5 +1,8 @@
-import { listarTareas } from "./tareas/listar.js";
-import { crearTarea } from "./tareas/crear.js";
+import { listarTareas,
+        crearTarea,
+        actualizarTarea,
+        eliminarTarea } from "./services/tareasService.js";
+
 
 //  Referencias a los elementos
 const idUsuarioInput = document.getElementById('id-usuario');
