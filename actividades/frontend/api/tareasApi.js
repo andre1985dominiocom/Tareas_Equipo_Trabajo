@@ -1,0 +1,46 @@
+const API_URL = "https://jsonplaceholder.typicode.com";
+
+export const getPostsByUser = async (userId) => {
+    try {
+        const res = await fetch(`${API_URL}/posts?userId=${userId}`);
+        if (!res.ok) return [];
+        return await res.json();
+    } catch (error) {
+        return [];
+    }
+};
+
+export const createPost = async (data) => {
+    try {
+        const res = await fetch(`${API_URL}/posts`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        });
+        return await res.json();
+    } catch (error) {
+        return null;
+    }
+};
+
+export const updatePost = async (id, data) => {
+    try {
+        const res = await fetch(`${API_URL}/posts/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        });
+        return res.ok;
+    } catch (error) {
+        return false;
+    }
+};
+
+export const deletePost = async (id) => {
+    try {
+        const res = await fetch(`${API_URL}/posts/${id}`, { method: 'DELETE' });
+        return res.ok;
+    } catch (error) {
+        return false;
+    }
+};
