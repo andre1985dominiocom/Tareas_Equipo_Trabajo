@@ -13,9 +13,9 @@ export const validarTarea = (data) => {
         return { esValido: false, mensaje: "El título debe tener al menos 3 caracteres." };
     }
 
-    return { 
-        esValido: true, 
-        datos: { title: tituloLimpio, body: cuerpoLimpio } 
+    return {
+        esValido: true,
+        datos: { title: tituloLimpio, body: cuerpoLimpio }
     };
 };
 
@@ -30,4 +30,19 @@ export const validarFormularioTarea = (titulo, descripcion) => {
         return { valido: false, error: "El título es demasiado corto." };
     }
     return { valido: true, data: { title: t, body: d } };
+};
+
+// RF01: Validación de filtros
+export const validarFiltroEstado = (
+    estado
+) => {
+
+    const estadosValidos = [
+        "",
+        "pendiente",
+        "en proceso",
+        "completada"
+    ];
+
+    return estadosValidos.includes(estado);
 };
