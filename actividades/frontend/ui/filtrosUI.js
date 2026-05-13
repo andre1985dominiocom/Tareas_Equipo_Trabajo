@@ -1,6 +1,7 @@
 export const filtrosUI = {
     estado: document.getElementById("filtro-estado"),
     usuario: document.getElementById("filtro-usuario"),
+    orden: document.getElementById("orden-tareas"),
 
     obtenerFiltros: () => {
         return {
@@ -14,6 +15,10 @@ export const filtrosUI = {
         this.usuario.value = "";
     },
 
+    obtenerOrden() {
+        return this.orden.value;
+    },
+
     onchange(callback) {
 
         this.estado.addEventListener("change",
@@ -21,6 +26,10 @@ export const filtrosUI = {
         );
 
         this.usuario.addEventListener("change",
+            callback
+        );
+
+        this.orden.addEventListener("change",
             callback
         );
     }
