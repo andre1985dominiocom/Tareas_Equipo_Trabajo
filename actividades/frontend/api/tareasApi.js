@@ -1,5 +1,15 @@
 const API_URL = "https://jsonplaceholder.typicode.com";
 
+export const getAllPosts = async () => {
+    try {
+        const res = await fetch(`${API_URL}/posts`);
+        if (!res.ok) return [];
+        return await res.json();
+    } catch (error) {
+        return [];
+    }
+};
+
 export const getPostsByUser = async (userId) => {
     try {
         const res = await fetch(`${API_URL}/posts?userId=${userId}`);

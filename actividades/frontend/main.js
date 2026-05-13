@@ -1,9 +1,11 @@
 import { UI } from "./ui/tareasUI.js";
+import { filtrosUI } from "./ui/filtrosUI.js";
+import { filtarTareasServicio  } from "./services/tareasService.js";
 import { getPostsByUser, createPost, deletePost, updatePost } from "./api/tareasApi.js";
 
 let usuarioIdActual = null;
 let tareaIdEditando = null;
-let tareasLocales = []; 
+let tareasLocales = [];
 
 // --- FUNCIÓN DE PERSISTENCIA ---
 // Guarda las tareas actuales en la memoria del navegador vinculadas al ID del usuario
@@ -116,3 +118,11 @@ UI.btnActualizar.addEventListener("click", async () => {
         UI.renderizarLista(tareasLocales, acciones);
     }
 });
+
+// RF01: Filtro avanzado de tareas
+const actualizarVista = async () => {
+    const filtros = filtrosUI.obtenerFiltros();
+    const tareas = await filtarTareasServicio(filtros);
+
+    UI.renderizarLista(tareas, acciones);
+};
