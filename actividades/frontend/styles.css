@@ -68,3 +68,7 @@ button:disabled {
     font-size: 0.9rem;
     margin-top: 5px;
 }
+
+.seccion-lista {
+    border: 2px solid   ;
+}
