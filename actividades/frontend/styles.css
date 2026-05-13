@@ -12,7 +12,12 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     width: 100%;
-    max-width: 500px;
+    max-width: 700px;
+}
+
+.grupo-entrada {
+    margin: auto;
+    width: 60%;
 }
 
 textarea {
@@ -67,4 +72,8 @@ button:disabled {
 #mensaje-busqueda {
     font-size: 0.9rem;
     margin-top: 5px;
+}
+
+.seccion-lista {
+    border: 2px solid   ;
 }
