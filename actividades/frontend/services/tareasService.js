@@ -47,3 +47,37 @@ export const eliminarTareaServicio = async (id) => {
 export const actualizarTareaServicio = async (id, datos) => {
     return await updatePost(id, datos);
 };
+
+// RF02: Ordenar tareas por diferentes criterios
+export const ordenarTareasServicio = (
+    tareas,
+    criterio
+) => {
+
+    const copia = [...tareas];
+
+    switch (criterio) {
+
+        case "nombre":
+
+            return copia.sort((a, b) =>
+                a.title.localeCompare(b.title)
+            );
+
+        case "estado":
+
+            return copia.sort((a, b) =>
+                a.estado.localeCompare(b.estado)
+            );
+
+        case "fecha":
+
+            return copia.sort((a, b) =>
+                new Date(b.fechaCreacion) -
+                new Date(a.fechaCreacion)
+            );
+
+        default:
+            return copia;
+    }
+};

@@ -122,7 +122,11 @@ UI.btnActualizar.addEventListener("click", async () => {
 // RF01: Filtro avanzado de tareas
 const actualizarVista = async () => {
     const filtros = filtrosUI.obtenerFiltros();
-    const tareas = await filtarTareasServicio(filtros);
+    const orden = filtrosUI.obtenerOrden();
+
+    let tareas = await filtarTareasServicio(filtros);
+
+    tareas = ordenarTareasServicio(tareas, orden);
 
     UI.renderizarLista(tareas, acciones);
 };
