@@ -1,132 +1,457 @@
 import { UI } from "./ui/tareasUI.js";
+
 import { filtrosUI } from "./ui/filtrosUI.js";
-import { filtarTareasServicio  } from "./services/tareasService.js";
-import { getPostsByUser, createPost, deletePost, updatePost } from "./api/tareasApi.js";
+
+import {
+    ordenarTareasServicio
+} from "./services/tareasService.js";
+
+import {
+    getPostsByUser,
+    createPost,
+    deletePost,
+    updatePost
+} from "./api/tareasApi.js";
 
 let usuarioIdActual = null;
+
 let tareaIdEditando = null;
+
 let tareasLocales = [];
 
-// --- FUNCIÓN DE PERSISTENCIA ---
-// Guarda las tareas actuales en la memoria del navegador vinculadas al ID del usuario
-const guardarEnStorage = (userId, tareas) => {
-    localStorage.setItem(`tareas_user_${userId}`, JSON.stringify(tareas));
+// ===============================
+// STORAGE
+// ===============================
+
+const guardarEnStorage = (
+    userId,
+    tareas
+) => {
+
+    localStorage.setItem(
+        `tareas_user_${userId}`,
+        JSON.stringify(tareas)
+    );
 };
 
-// --- BÚSQUEDA ---
-document.getElementById('boton-buscar').addEventListener("click", async () => {
-    const input = document.getElementById('id-usuario');
-    const id = input.value.trim();
-    
-    if (!id) return alert("Por favor, ingrese un ID de usuario.");
+// ===============================
+// BUSCAR USUARIO
+// ===============================
 
-    try {
-        const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
-        if (!res.ok) throw new Error("Usuario no encontrado");
-        
-        const user = await res.json();
-        usuarioIdActual = id;
-        document.getElementById('mensaje-busqueda').innerText = `Usuario encontrado : ${user.name}`;
-        
-        // --- LÓGICA DE CARGA INTELIGENTE ---
-        // 1. Intentamos leer de LocalStorage primero
-        const datosGuardados = localStorage.getItem(`tareas_user_${id}`);
-        
-        if (datosGuardados) {
-            tareasLocales = JSON.parse(datosGuardados);
-        } else {
-            // 2. Si no hay nada guardado, traemos de la API por primera vez
-            tareasLocales = await getPostsByUser(id);
-            guardarEnStorage(id, tareasLocales);
+document
+    .getElementById("boton-buscar")
+
+    .addEventListener(
+        "click",
+        async () => {
+
+            const input =
+                document.getElementById(
+                    "id-usuario"
+                );
+
+            const id =
+                input.value.trim();
+
+            if (!id) {
+
+                alert(
+                    "Por favor ingrese un ID."
+                );
+
+                return;
+            }
+
+            try {
+
+                const res =
+                    await fetch(
+                        `https://jsonplaceholder.typicode.com/users/${id}`
+                    );
+
+                if (!res.ok) {
+
+                    throw new Error(
+                        "Usuario no encontrado"
+                    );
+                }
+
+                const user =
+                    await res.json();
+
+                usuarioIdActual = id;
+
+                document.getElementById(
+                    "mensaje-busqueda"
+                ).innerText =
+                    `Usuario encontrado: ${user.name}`;
+
+                // ===============================
+                // CARGAR DESDE STORAGE
+                // ===============================
+
+                const datosGuardados =
+                    localStorage.getItem(
+                        `tareas_user_${id}`
+                    );
+
+                if (datosGuardados) {
+
+                    tareasLocales =
+                        JSON.parse(
+                            datosGuardados
+                        );
+
+                } else {
+
+                    // ===============================
+                    // CARGAR DESDE API
+                    // ===============================
+
+                    const tareasAPI =
+                        await getPostsByUser(id);
+
+                    tareasLocales =
+                        tareasAPI.map(
+                            tarea => ({
+                                ...tarea,
+
+                                estado:
+                                    [
+                                        "Pendiente",
+                                        "En Proceso",
+                                        "Completada"
+                                    ][
+                                        tarea.id % 3
+                                    ],
+
+                                fechaCreacion:
+                                    new Date()
+                                    .toISOString()
+                            })
+                        );
+
+                    guardarEnStorage(
+                        id,
+                        tareasLocales
+                    );
+                }
+
+                // ===============================
+                // HABILITAR FORMULARIO
+                // ===============================
+
+                document
+                    .getElementById(
+                        "formulario-tareas"
+                    )
+                    .classList.remove(
+                        "formulario-desactivado"
+                    );
+
+                document
+                    .querySelectorAll(
+                        "#formulario-tareas input, #formulario-tareas textarea, #boton-guardar-tarea"
+                    )
+                    .forEach(
+                        el =>
+                            el.disabled = false
+                    );
+
+                UI.resetearFormulario(
+                    "registro"
+                );
+
+                UI.renderizarLista(
+                    tareasLocales,
+                    acciones
+                );
+
+            } catch (error) {
+
+                document.getElementById(
+                    "mensaje-busqueda"
+                ).innerText =
+                    "Error: usuario no encontrado.";
+
+                document.getElementById(
+                    "contenedor-tareas"
+                ).innerHTML = "";
+            }
         }
-        
-        // Habilitar interfaz
-        document.getElementById('formulario-tareas').classList.remove('formulario-desactivado');
-        document.querySelectorAll('#formulario-tareas input, #formulario-tareas textarea, #boton-guardar-tarea')
-                .forEach(el => el.disabled = false);
-        
-        UI.resetearFormulario("registro");
-        UI.renderizarLista(tareasLocales, acciones);
-    } catch (err) {
-        document.getElementById('mensaje-busqueda').innerText = "Error: El usuario no existe.";
-        document.getElementById('contenedor-tareas').innerHTML = "";
-    }
-});
+    );
 
-// --- ACCIONES CRUD ---
+// ===============================
+// ACCIONES CRUD
+// ===============================
+
 const acciones = {
+
+    // ===============================
+    // ELIMINAR
+    // ===============================
+
     onDelete: async (id) => {
-        if (!confirm("¿Eliminar esta tarea?")) return;
-        // Simulamos éxito en la API
-        await deletePost(id); 
-        
-        // Actualizamos localmente y PERSISTIMOS
-        tareasLocales = tareasLocales.filter(t => t.id !== id);
-        guardarEnStorage(usuarioIdActual, tareasLocales);
-        UI.renderizarLista(tareasLocales, acciones);
+
+        if (
+            !confirm(
+                "¿Eliminar esta tarea?"
+            )
+        ) return;
+
+        await deletePost(id);
+
+        tareasLocales =
+            tareasLocales.filter(
+                t => t.id !== id
+            );
+
+        guardarEnStorage(
+            usuarioIdActual,
+            tareasLocales
+        );
+
+        UI.renderizarLista(
+            tareasLocales,
+            acciones
+        );
     },
+
+    // ===============================
+    // EDITAR
+    // ===============================
+
     onEdit: (tarea) => {
-        tareaIdEditando = tarea.id;
-        document.getElementById("titulo-tarea").value = tarea.title;
-        document.getElementById("descripcion-tarea").value = tarea.body;
-        UI.resetearFormulario("edicion");
+
+        tareaIdEditando =
+            tarea.id;
+
+        document.getElementById(
+            "titulo-tarea"
+        ).value =
+            tarea.title;
+
+        document.getElementById(
+            "descripcion-tarea"
+        ).value =
+            tarea.body;
+
+        UI.resetearFormulario(
+            "edicion"
+        );
+
         window.scrollTo(0, 0);
     }
 };
 
-// crear tarea o el submit
-document.getElementById('formulario-tareas').addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (tareaIdEnEdicion) return; 
+// ===============================
+// CREAR TAREA
+// ===============================
 
-    const nueva = {
-        title: document.getElementById("titulo-tarea").value,
-        body: document.getElementById("descripcion-tarea").value,
-        userId: parseInt(usuarioIdActual)
-    };
+document
+    .getElementById(
+        "formulario-tareas"
+    )
 
-    const creada = await createPost(nueva);
-    if (creada) {
-        // Añadimos ID único y guardamos
-        const tareaVisual = { ...creada, id: Date.now() };
-        tareasLocales.unshift(tareaVisual);
-        
-        guardarEnStorage(usuarioIdActual, tareasLocales); // PERSISTENCIA
-        UI.renderizarLista(tareasLocales, acciones);
-        UI.resetearFormulario("registro");
-    }
-});
+    .addEventListener(
+        "submit",
+        async (e) => {
 
-// --- ACTUALIZAR TAREA (Botón Naranja) ---
-UI.btnActualizar.addEventListener("click", async () => {
-    const dataActualizada = {
-        title: document.getElementById("titulo-tarea").value,
-        body: document.getElementById("descripcion-tarea").value,
-        userId: parseInt(usuarioIdActual)
-    };
+            e.preventDefault();
 
-    const exito = await updatePost(tareaIdEditando, dataActualizada);
-    if (exito) {
-        // Mapeamos los cambios
-        tareasLocales = tareasLocales.map(t => 
-            t.id === tareaIdEditando ? { ...t, ...dataActualizada } : t
+            // Si estamos editando
+            // NO crear nueva tarea
+
+            if (tareaIdEditando) return;
+
+            const nueva = {
+
+                title:
+                    document.getElementById(
+                        "titulo-tarea"
+                    ).value.trim(),
+
+                body:
+                    document.getElementById(
+                        "descripcion-tarea"
+                    ).value.trim(),
+
+                userId:
+                    parseInt(
+                        usuarioIdActual
+                    ),
+
+                estado:
+                    "Pendiente",
+
+                fechaCreacion:
+                    new Date()
+                    .toISOString()
+            };
+
+            const creada =
+                await createPost(
+                    nueva
+                );
+
+            if (creada) {
+
+                // IMPORTANTE:
+                // usamos el ID
+                // devuelto por la API
+
+                const tareaVisual = {
+
+                    ...nueva,
+
+                    id:
+                        creada.id || Math.random()
+                };
+
+                tareasLocales.unshift(
+                    tareaVisual
+                );
+
+                guardarEnStorage(
+                    usuarioIdActual,
+                    tareasLocales
+                );
+
+                UI.renderizarLista(
+                    tareasLocales,
+                    acciones
+                );
+
+                UI.resetearFormulario(
+                    "registro"
+                );
+            }
+        }
+    );
+
+// ===============================
+// ACTUALIZAR TAREA
+// ===============================
+
+UI.btnActualizar
+    .addEventListener(
+        "click",
+        async () => {
+
+            if (
+                !tareaIdEditando
+            ) return;
+
+            const dataActualizada = {
+
+                title:
+                    document.getElementById(
+                        "titulo-tarea"
+                    ).value.trim(),
+
+                body:
+                    document.getElementById(
+                        "descripcion-tarea"
+                    ).value.trim(),
+
+                userId:
+                    parseInt(
+                        usuarioIdActual
+                    )
+            };
+
+            const exito =
+                await updatePost(
+                    tareaIdEditando,
+                    dataActualizada
+                );
+
+            if (exito) {
+
+                tareasLocales =
+                    tareasLocales.map(
+                        t =>
+
+                            t.id ===
+                            tareaIdEditando
+
+                                ? {
+                                    ...t,
+                                    ...dataActualizada
+                                }
+
+                                : t
+                    );
+
+                guardarEnStorage(
+                    usuarioIdActual,
+                    tareasLocales
+                );
+
+                tareaIdEditando =
+                    null;
+
+                UI.resetearFormulario(
+                    "registro"
+                );
+
+                UI.renderizarLista(
+                    tareasLocales,
+                    acciones
+                );
+            }
+        }
+    );
+
+const actualizarVista = () => {
+
+    const filtros =
+        filtrosUI.obtenerFiltros();
+
+    const orden =
+        filtrosUI.obtenerOrden();
+
+    let tareas = [...tareasLocales];
+
+    // =========================
+    // FILTRAR POR ESTADO
+    // =========================
+
+    if (filtros.estado) {
+
+        tareas = tareas.filter(
+            t => t.estado?.toLowerCase() === filtros.estado.toLowerCase()
         );
-        
-        guardarEnStorage(usuarioIdActual, tareasLocales); // PERSISTENCIA
-        tareaIdEditando = null;
-        UI.resetearFormulario("registro");
-        UI.renderizarLista(tareasLocales, acciones);
     }
-});
 
-// RF01: Filtro avanzado de tareas
-const actualizarVista = async () => {
-    const filtros = filtrosUI.obtenerFiltros();
-    const orden = filtrosUI.obtenerOrden();
+    // =========================
+    // FILTRAR POR USUARIO
+    // =========================
 
-    let tareas = await filtarTareasServicio(filtros);
+    if (filtros.usuario) {
 
-    tareas = ordenarTareasServicio(tareas, orden);
+        tareas = tareas.filter(
+            t =>
+                t.userId ===
+                parseInt(filtros.usuario)
+        );
+    }
 
-    UI.renderizarLista(tareas, acciones);
+    // =========================
+    // ORDENAR
+    // =========================
+
+    tareas = ordenarTareasServicio(
+        tareas,
+        orden
+    );
+
+    UI.renderizarLista(
+        tareas,
+        acciones
+    );
 };
+
+filtrosUI.onchange(
+    actualizarVista
+);

@@ -40,8 +40,16 @@ export const updatePost = async (id, data) => {
             body: JSON.stringify(data),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
-        return res.ok;
+
+        if (!res.ok) {
+            console.error(`Error HTTP: ${res.status}`);
+            return false;
+        }
+
+        return await res.json();
+
     } catch (error) {
+        console.error(error);
         return false;
     }
 };

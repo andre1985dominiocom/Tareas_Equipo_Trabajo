@@ -39,9 +39,9 @@ export const validarFiltroEstado = (
 
     const estadosValidos = [
         "",
-        "pendiente",
-        "en proceso",
-        "completada"
+        "Pendiente",
+        "En proceso",
+        "Completada"
     ];
 
     return estadosValidos.includes(estado);

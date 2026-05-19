@@ -97,9 +97,12 @@ export const UI = {
                 <p>
                     <strong>Fecha:</strong>
 
-                    ${new Date(
+                    ${
                         tarea.fechaCreacion
-                    ).toLocaleDateString()}
+                        ? new Date(
+                            tarea.fechaCreacion
+                    ).toLocaleDateString()
+                    : "Sin fecha"}
                 </p>
 
                 <div class="contenedor-btn">

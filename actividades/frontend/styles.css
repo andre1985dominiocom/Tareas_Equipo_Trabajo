@@ -128,3 +128,19 @@ button:disabled {
     margin: 0;
     border-radius: 20px;
 }
+
+.seccion-filtros {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 2px solid green;
+    border-radius: 30px;
+    padding: 20px;
+}
+
+.contenedor-orden {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}

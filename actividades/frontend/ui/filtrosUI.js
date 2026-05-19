@@ -5,31 +5,31 @@ export const filtrosUI = {
 
     obtenerFiltros: () => {
         return {
-            estado: this.estado.value,
-            usuario: this.usuario.value
+            estado: filtrosUI.estado.value,
+            usuario: filtrosUI.usuario.value
         };
     },
 
-    limpiarFiltros: () => {
-        this.estado.value = "";
-        this.usuario.value = "";
+    limpiarFiltros() {
+            filtrosUI.estado.value = "";
+            filtrosUI.usuario.value = "";
     },
 
     obtenerOrden() {
-        return this.orden.value;
+        return filtrosUI.orden.value;
     },
 
     onchange(callback) {
-
-        this.estado.addEventListener("change",
+    
+        filtrosUI.estado.addEventListener("change",
             callback
         );
-
-        this.usuario.addEventListener("change",
+    
+        filtrosUI.usuario.addEventListener("change",
             callback
         );
-
-        this.orden.addEventListener("change",
+    
+        filtrosUI.orden.addEventListener("change",
             callback
         );
     }

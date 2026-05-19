@@ -11,7 +11,7 @@ export const obtenerTareasServicio = async (userId) => {
 };
 
 // RF01: Filtro avanzado de tareas
-export const filtarTareasServicio = async (filtros) => {
+export const filtrarTareasServicio = async (filtros) => {
     const tareas = await getAllPosts();
 
     const tareasConEstado = tareas.map(tarea => ({
@@ -61,21 +61,23 @@ export const ordenarTareasServicio = (
         case "nombre":
 
             return copia.sort((a, b) =>
-                a.title.localeCompare(b.title)
+                (a.title || "").localeCompare(b.title || "")
             );
 
         case "estado":
 
             return copia.sort((a, b) =>
-                a.estado.localeCompare(b.estado)
+
+                (a.estado || "").localeCompare(b.estado || "")
             );
 
         case "fecha":
 
-            return copia.sort((a, b) =>
-                new Date(b.fechaCreacion) -
-                new Date(a.fechaCreacion)
-            );
+            new Date(a.fechaCreacion || 0);
+            
+            -
+            
+            new Date(b.fechaCreacion || 0);
 
         default:
             return copia;
