@@ -28,14 +28,14 @@
 
     <form id="formulario-tareas" class="formulario-desactivado">
     
-      <div class="grupo-entrada">
-        <label>Título de la Tarea:</label>
-        <input type="text" id="titulo-tarea" placeholder="Ej: Firmar contrato" required disabled>
+      <div class="grupo-entrada-tarea">
+        <label class="grupo-entrada-tarea__subtitulos">Título de la Tarea:</label>
+        <input type="text" id="titulo-tarea" placeholder="Ingrese el nombre de la tarea" required disabled>
       </div>
 
-      <div class="grupo-entrada">
-        <label>Descripción:</label>
-        <textarea id="descripcion-tarea" placeholder="Detalles de la tarea..." required disabled></textarea>
+      <div class="grupo-entrada-tarea">
+        <label class="grupo-entrada-tarea__subtitulos">Descripción:</label>
+        <textarea id="descripcion-tarea" placeholder="Ingrese detalles de la tarea" required disabled></textarea>
       </div>
     
       <div class="contenedor-btn">
@@ -113,8 +113,8 @@
 </div>
 
 <!--LISTADO FUERA DEL FORM -->
+  <h2>Tareas del Usuario</h2>
     <section class="seccion-lista">
-      <h2>Tareas del Usuario</h2>
       <div id="contenedor-tareas"></div>
     </section>
   </div>

@@ -26,7 +26,7 @@ document.getElementById('boton-buscar').addEventListener("click", async () => {
         
         const user = await res.json();
         usuarioIdActual = id;
-        document.getElementById('mensaje-busqueda').innerText = `Usuario: ${user.name}`;
+        document.getElementById('mensaje-busqueda').innerText = `Usuario encontrado : ${user.name}`;
         
         // --- LÓGICA DE CARGA INTELIGENTE ---
         // 1. Intentamos leer de LocalStorage primero

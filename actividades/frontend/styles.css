@@ -6,6 +6,10 @@ body {
     padding: 20px;
 }
 
+html {
+    font-size: 20px;
+}
+
 .contenedor {
     background: white;
     padding: 30px;
@@ -15,21 +19,13 @@ body {
     max-width: 700px;
 }
 
-.grupo-entrada {
-    margin: auto;
-    width: 60%;
-}
-
 textarea {
     resize: none;
 }
 
-h2 { color: #333; font-size: 1.2rem; }
-
-.grupo-entrada {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
+h2 {
+    font-size: 1.4rem;
+    font-weight: bolder;
 }
 
 
@@ -70,10 +66,65 @@ button:disabled {
 }
 
 #mensaje-busqueda {
-    font-size: 0.9rem;
-    margin-top: 5px;
+    font-size: 1rem;
+    color: #125f22;
 }
 
 .seccion-lista {
-    border: 2px solid   ;
+    border: 2px solid green;
+    border-radius: 30px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#contenedor-tareas {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contenedor-filtros {
+    display: flex;
+}
+
+#boton-buscar, #id-usuario {
+    width: 40%;
+    height: auto;
+    margin: 0;
+}
+
+.grupo-entrada {
+    width: 80%;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 5%;
+    margin: auto;
+}
+
+.grupo-entrada-tarea {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    margin: auto;
+}
+
+.grupo-entrada-tarea__subtitulos {
+    padding-left: 2%;
+}
+
+.contenedor-btn {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 5%;
+    width: 60%;
+    justify-content: space-evenly;
+    margin: 15px auto;
+}
+
+#boton-guardar-tarea, #boton-eliminar-tarea {
+    width: 40%;
+    height: auto;
+    margin: 0;
+    border-radius: 20px;
 }
