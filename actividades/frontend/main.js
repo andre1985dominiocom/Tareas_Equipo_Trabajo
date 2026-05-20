@@ -2,8 +2,10 @@ import { UI } from "./ui/tareasUI.js";
 
 import { filtrosUI } from "./ui/filtrosUI.js";
 
+
 import {
-    ordenarTareasServicio
+    ordenarTareasServicio,
+    exportarTareasJsonServicio //importamos el servicio de exportar tareas a json
 } from "./services/tareasService.js";
 
 import {
@@ -177,6 +179,9 @@ document
                 document.getElementById(
                     "contenedor-tareas"
                 ).innerHTML = "";
+
+                //se deshabiita el boton exportat si ocurre un error de busqueda
+                if(UI.btnExportar) UI.btnExportar.disabled = true;
             }
         }
     );
@@ -455,3 +460,23 @@ const actualizarVista = () => {
 filtrosUI.onchange(
     actualizarVista
 );
+
+//nuevo evento para exportar taraeas a json
+//agregamos el evento al detectar el click, cuando el usuario hace click en el boton exportar
+UI.btnExportar.addEventListener("click", () => {
+    try{
+        //guardaamos en una const tareasParaExportar, el arreglo exacto de las tareas que la UI, tiene renderizadas, es decir la que se nos muestra en pantalla.
+        const tareasParaExportar = UI.tareasActualesEnPantalla();
+        //por medio de un condicoal if, verificamos que el arrglo contenga informacion, antes de porecsarlo
+        if(!tareasParaExportar || tareasParaExportar.length === 0 ){
+            alert("no hay tareas visibles en la pantalla para exportar.");
+            return;
+        }
+    
+        //si el arreglo si tiene las tareas, entonces llamsmos al servicio exportarTareasJsonServicio, pasandole el arreglo de tareas que queremos exportar
+        exportarTareasJsonServicio(tareasParaExportar);
+    }catch(error){
+        alert("ocurrio un error al tratar de exportar las tareas: " + error.message);
+    }
+    
+});
