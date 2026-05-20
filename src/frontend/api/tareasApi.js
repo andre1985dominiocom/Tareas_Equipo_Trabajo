@@ -1,4 +1,4 @@
-const API_URL = "https://jsonplaceholder.typicode.com";
+const API_URL = "http://http://10.5.225.105:4173/";
 
 export const getAllPosts = async () => {
     try {
