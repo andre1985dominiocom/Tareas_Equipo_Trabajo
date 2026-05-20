@@ -466,7 +466,7 @@ filtrosUI.onchange(
 UI.btnExportar.addEventListener("click", () => {
     try{
         //guardaamos en una const tareasParaExportar, el arreglo exacto de las tareas que la UI, tiene renderizadas, es decir la que se nos muestra en pantalla.
-        const tareasParaExportar = UI.tareasActualesEnPantalla();
+        const tareasParaExportar = UI.tareasActualesEnPantalla;
         //por medio de un condicoal if, verificamos que el arrglo contenga informacion, antes de porecsarlo
         if(!tareasParaExportar || tareasParaExportar.length === 0 ){
             alert("no hay tareas visibles en la pantalla para exportar.");

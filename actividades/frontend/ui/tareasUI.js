@@ -78,10 +78,12 @@ export const UI = {
                 "<p>No hay tareas para mostrar.</p>";
 
                 //si no hay tareas pra nostrar se desctiva el boton exportar tareas
-                if(UI.btnExportar) UI.btnExportar.disabled = false;
+                if(UI.btnExportar) UI.btnExportar.disabled = true;
 
             return;
         }
+
+        if(UI.btnExportar) UI.btnExportar.disabled = false;
 
         tareas.forEach(tarea => {
 
