@@ -14,6 +14,13 @@ export const UI = {
         document.querySelector(
             ".seccion-tareas h2"
         ),
+        //se agrega el nuevo boton de portar tareas
+        btnExportar:
+        document.getElementById(
+            "boton-exportar-tareas"
+        ),
+        //creamos un arreglo vacio para guardar las tareas
+        tareasActualesEnPantalla:[],
 
     // Limpia y ajusta el formulario
     resetearFormulario: (
@@ -55,6 +62,9 @@ export const UI = {
         acciones
     ) => {
 
+        //guardamos una copia de las tareas que estamos mostrando en pantalla para luego poder exportarlas
+        UI.tareasActualesEnPantalla = [...tareas];
+
         const contenedor =
             document.getElementById(
                 "contenedor-tareas"
@@ -66,6 +76,9 @@ export const UI = {
 
             contenedor.innerHTML =
                 "<p>No hay tareas para mostrar.</p>";
+
+                //si no hay tareas pra nostrar se desctiva el boton exportar tareas
+                if(UI.btnExportar) UI.btnExportar.disabled = false;
 
             return;
         }
