@@ -1,100 +1,48 @@
 export const UI = {
 
+    formulario:
+        document.getElementById("formulario-tareas"),
+
+    inputTitulo:
+        document.getElementById("titulo-tarea"),
+
+    inputDescripcion:
+        document.getElementById("descripcion-tarea"),
+
     btnGuardar:
-        document.getElementById(
-            "boton-guardar-tarea"
-        ),
+        document.getElementById("boton-guardar-tarea"),
 
     btnActualizar:
-        document.getElementById(
-            "boton-actualizar-tarea"
-        ),
+        document.getElementById("boton-actualizar-tarea"),
 
-    tituloForm:
-        document.querySelector(
-            ".seccion-tareas h2"
-        ),
-        //se agrega el nuevo boton de portar tareas
-        btnExportar:
-        document.getElementById(
-            "boton-exportar-tareas"
-        ),
-        //creamos un arreglo vacio para guardar las tareas
-        tareasActualesEnPantalla:[],
+    btnExportar:
+        document.getElementById("boton-exportar-tareas"),
 
-    // Limpia y ajusta el formulario
-    resetearFormulario: (
-        modo = "registro"
-    ) => {
+    contenedor:
+        document.getElementById("contenedor-tareas"),
 
-        document
-            .getElementById(
-                "formulario-tareas"
-            )
-            .reset();
+    mensajeBusqueda:
+        document.getElementById("mensaje-busqueda"),
 
-        if (modo === "edicion") {
+    renderizarTareas(tareas, acciones) {
 
-            UI.tituloForm.innerText =
-                "📝 Editando Tarea";
+        UI.contenedor.innerHTML = "";
 
-            UI.btnGuardar.style.display =
-                "none";
+        if (!tareas.length) {
 
-            UI.btnActualizar.style.display =
-                "block";
-
-        } else {
-
-            UI.tituloForm.innerText =
-                "Registrar Nueva Tarea";
-
-            UI.btnGuardar.style.display =
-                "block";
-
-            UI.btnActualizar.style.display =
-                "none";
-        }
-    },
-
-    renderizarLista: (
-        tareas,
-        acciones
-    ) => {
-
-        //guardamos una copia de las tareas que estamos mostrando en pantalla para luego poder exportarlas
-        UI.tareasActualesEnPantalla = [...tareas];
-
-        const contenedor =
-            document.getElementById(
-                "contenedor-tareas"
-            );
-
-        contenedor.innerHTML = "";
-
-        if (tareas.length === 0) {
-
-            contenedor.innerHTML =
-                "<p>No hay tareas para mostrar.</p>";
-
-                //si no hay tareas pra nostrar se desctiva el boton exportar tareas
-                if(UI.btnExportar) UI.btnExportar.disabled = true;
+            UI.contenedor.innerHTML =
+                "<p>No hay tareas.</p>";
 
             return;
         }
 
-        if(UI.btnExportar) UI.btnExportar.disabled = false;
-
         tareas.forEach(tarea => {
 
-            const div =
-                document.createElement("div");
+            const div = document.createElement("div");
 
-            div.className =
-                "seccion-lista";
+            div.classList.add("seccion-lista");
 
             div.innerHTML = `
-
                 <h4>${tarea.title}</h4>
 
                 <p>${tarea.body}</p>
@@ -104,56 +52,31 @@ export const UI = {
                     ${tarea.estado}
                 </p>
 
-                <p>
-                    <strong>Usuario:</strong>
-                    ${tarea.userId}
-                </p>
+                <button class="editar">
+                    Editar
+                </button>
 
-                <p>
-                    <strong>Fecha:</strong>
-
-                    ${
-                        tarea.fechaCreacion
-                        ? new Date(
-                            tarea.fechaCreacion
-                    ).toLocaleDateString()
-                    : "Sin fecha"}
-                </p>
-
-                <div class="contenedor-btn">
-
-                    <button
-                        type="button"
-                        class="btn-actualizar">
-
-                        Editar
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn-eliminar">
-
-                        Eliminar
-                    </button>
-
-                </div>
+                <button class="eliminar">
+                    Eliminar
+                </button>
             `;
 
-            div.querySelector(
-                ".btn-eliminar"
-            ).onclick = () =>
-                acciones.onDelete(
-                    tarea.id
+            div.querySelector(".editar")
+                .addEventListener("click", () =>
+                    acciones.editar(tarea)
                 );
 
-            div.querySelector(
-                ".btn-actualizar"
-            ).onclick = () =>
-                acciones.onEdit(
-                    tarea
+            div.querySelector(".eliminar")
+                .addEventListener("click", () =>
+                    acciones.eliminar(tarea.id)
                 );
 
-            contenedor.appendChild(div);
+            UI.contenedor.appendChild(div);
         });
+    },
+
+    limpiarFormulario() {
+
+        UI.formulario.reset();
     }
 };

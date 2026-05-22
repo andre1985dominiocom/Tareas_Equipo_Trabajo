@@ -1,64 +1,46 @@
-const API_URL = "https://jsonplaceholder.typicode.com";
-
-export const getAllPosts = async () => {
-    try {
-        const res = await fetch(`${API_URL}/posts`);
-        if (!res.ok) return [];
-        return await res.json();
-    } catch (error) {
-        return [];
+import { API_URL } from "./client.js";
+export const getUserById = async (id) => {
+    const response = await fetch(`${API_URL}/users/${id}`);
+    if (!response.ok) {
+        throw new Error("Usuario no encontrado");
     }
+    return await response.json();
 };
 
 export const getPostsByUser = async (userId) => {
-    try {
-        const res = await fetch(`${API_URL}/posts?userId=${userId}`);
-        if (!res.ok) return [];
-        return await res.json();
-    } catch (error) {
-        return [];
-    }
+    const response = await fetch(
+        `${API_URL}/posts?userId=${userId}`
+    );
+    if (!response.ok) return [];
+    return await response.json();
 };
 
 export const createPost = async (data) => {
-    try {
-        const res = await fetch(`${API_URL}/posts`, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-        });
-        return await res.json();
-    } catch (error) {
-        return null;
-    }
+    const response = await fetch(`${API_URL}/posts`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    return await response.json();
 };
 
 export const updatePost = async (id, data) => {
-    try {
-        const res = await fetch(`${API_URL}/posts/${id}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-        });
 
-        if (!res.ok) {
-            console.error(`Error HTTP: ${res.status}`);
-            return false;
-        }
-
-        return await res.json();
-
-    } catch (error) {
-        console.error(error);
-        return false;
-    }
+    const response = await fetch(`${API_URL}/posts/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    return await response.json();
 };
 
 export const deletePost = async (id) => {
-    try {
-        const res = await fetch(`${API_URL}/posts/${id}`, { method: 'DELETE' });
-        return res.ok;
-    } catch (error) {
-        return false;
-    }
+    const response = await fetch(`${API_URL}/posts/${id}`, {
+        method: "DELETE"
+    });
+    return response.ok;
 };
